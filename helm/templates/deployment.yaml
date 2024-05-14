@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-deployment
+  labels:
+    app: {{ .Release.Name }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ .Release.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          ports:
+            - containerPort: 8200
+          env:
+            - name: VAULT_DEV_ROOT_TOKEN_ID
+              value: {{ .Values.config.VAULT_DEV_ROOT_TOKEN_ID | quote }}
+            - name: VAULT_DEV_LISTEN_ADDRESS
+              value: {{ .Values.config.VAULT_DEV_LISTEN_ADDRESS | quote }}
+          command: ["vault", "server", "-dev"]

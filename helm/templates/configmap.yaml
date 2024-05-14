@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-config
+data:
+  VAULT_DEV_ROOT_TOKEN_ID: {{ .Values.config.VAULT_DEV_ROOT_TOKEN_ID | quote }}
+  VAULT_DEV_LISTEN_ADDRESS: {{ .Values.config.VAULT_DEV_LISTEN_ADDRESS | quote }}
